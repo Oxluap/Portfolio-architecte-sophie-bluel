@@ -1,16 +1,21 @@
 // Récupération des projets de l'architecte//
-const reponse = fetch('http://localhost:5678/api/works')
-.then((reponse) => reponse.json())
-.then((works) => {
-    
-//création balise et import element//
-async function imageElement() {
-const createImg = document.createElement("img");
-createImg.src = works.imageUrl;
-}
+const imagesContainer = document.querySelector('.gallery')
 
-//Rattachement//
-async function rattachGallery() {
-const sectionGallery = document.querySelector(".gallery");
-sectionGallery.appendChild(createImg);
-}})
+const reponse = fetch('http://localhost:5678/api/works')
+    .then((reponse) => reponse.json())
+    .then((data) => {
+        data.forEach((image) => {
+            const figure = document.createElement('figure')
+            const figureCaption = document.createElement('figcaption')
+            const figureImage = document.createElement('img')
+
+            figureImage.src = image.imageUrl
+            figureImage.alt = image.title
+            figureCaption.innerHTML = image.title
+
+            imagesContainer.appendChild(figure)
+            figure.appendChild(figureImage)
+            figure.appendChild(figureCaption)       
+    });
+});
+    
