@@ -199,7 +199,7 @@ footer nav ul {
 	margin-bottom: 30px;
 }
 
-.filtre button{
+.bouton-css{
 	font-family: 'Syne';
 	font-size: 0.9em;
 	color: #1D6154;
@@ -214,11 +214,12 @@ footer nav ul {
 	margin-bottom: 25px;
 }
 
-.filtre button:focus{
+.bouton-css:focus, .bouton-css.selected{
 	background-color: #1D6154;
 	color: white;
 	border-width: 0px;
 }
+
 
 /*login*/
 

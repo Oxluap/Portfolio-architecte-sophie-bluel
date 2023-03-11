@@ -129,6 +129,38 @@ bouton.addEventListener('click',filtreTous);
 
 
 
+const boutons = document.querySelectorAll('.bouton-css');
+
+
+// Fonction qui garde le bouton filtre selectionné//
+
+boutons.forEach((bouton) => {
+    bouton.addEventListener('click', function() {
+      // Supprime la classe "selected" de tous les boutons
+      boutons.forEach((bouton) => {
+        bouton.classList.remove('selected');
+      });
+      // Ajoute la classe "selected" au bouton cliqué
+      this.classList.add('selected');
+      // Stocke l'ID du bouton cliqué dans le stockage local
+      localStorage.setItem('boutonSelectionne', this.id);
+    });
+  });
+  
+  // Vérifie si un bouton a été sélectionné précédemment
+  const boutonSelectionne = localStorage.getItem('boutonSelectionne');
+  if (boutonSelectionne) {
+    // Ajoute la classe "selected" au bouton correspondant
+    const bouton = document.getElementById(boutonSelectionne);
+    bouton.classList.add('selected');
+  }
+
+  window.onbeforeunload = function(){
+    localStorage.removeItem('boutonSelectionne');
+  }
+
+  
+
 
     
 

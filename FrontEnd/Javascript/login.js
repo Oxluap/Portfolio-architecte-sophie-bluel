@@ -20,13 +20,14 @@ let bouton = element.submit.addEventListener("click", (a) => {
         })
         .then((response) => response.json())
         .then((data) => {
-            console.log(data);
             localStorage.setItem("Token", data.token);
 
-            if (data.message) {
+            //Rajouter condition erreur//
+
+            if (data.message || data.error) {
                 alert("Identifiant ou mot de passe incorrect");
             } else {
-                window.location = "http://127.0.0.1:5500/Portfolio-architecte-sophie-bluel/FrontEnd/index.html";
+                window.location = "http://127.0.0.1:5500/Portfolio/FrontEnd/index.html";
             }
         })
 });
