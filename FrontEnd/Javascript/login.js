@@ -4,7 +4,10 @@ const element = {
     submit: document.querySelector("#submitUserInfo"),
 };
 
-let bouton = element.submit.addEventListener("click", (a) => {
+verifierConnexion = sessionStorage.getItem('isConnected')
+
+
+let boutonLogin = element.submit.addEventListener("click", (a) => {
     a.preventDefault();
 
     fetch("http://localhost:5678/api/users/login", {
@@ -20,21 +23,41 @@ let bouton = element.submit.addEventListener("click", (a) => {
         })
         .then((response) => response.json())
         .then((data) => {
-            localStorage.setItem("Token", data.token);
-
-            //Rajouter condition erreur//
+            console.log(data); // Ajouter cette ligne
+            sessionStorage.setItem("Token", data.token);
+            console.log(sessionStorage.getItem("Token")); // Ajouter cette ligne
 
             if (data.message || data.error) {
                 alert("Identifiant ou mot de passe incorrect");
             } else {
-                window.location = "http://127.0.0.1:5500/Portfolio/FrontEnd/index.html";
+                sessionStorage.setItem("isConnected", JSON.stringify(true));
+                console.log(sessionStorage.getItem("isConnected")); // Ajouter cette ligne
+                //remplace bien la valeur pa true sur mozilla et chrome
+
+                if (sessionStorage.getItem("isConnected")) {
+                    window.location.replace("index.html");
+                }
             }
         })
 });
-
-const verifierToken = localStorage.getItem("Token");
+const verifierToken = sessionStorage.getItem("Token");
 console.log(verifierToken);
 
 if (verifierToken) {
     console.log("Token is ok");
 };
+
+
+
+
+    
+
+ 
+
+
+
+
+
+
+
+

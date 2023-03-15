@@ -1,4 +1,5 @@
 // Récupération des projets de l'architecte//
+
 const imagesContainer = document.querySelector('.gallery')
 
 const reponse = fetch('http://localhost:5678/api/works')
@@ -17,11 +18,9 @@ const reponse = fetch('http://localhost:5678/api/works')
             imagesContainer.appendChild(figure)
             figure.appendChild(figureImage)
             figure.appendChild(figureCaption)    
-            
         });
     });
     
-
 //Filtres//
 //Filtre Objets//
         
@@ -128,11 +127,9 @@ var bouton = document.getElementById('btnTous');
 bouton.addEventListener('click',filtreTous);
 
 
+// Fonction qui garde le bouton filtre selectionné//
 
 const boutons = document.querySelectorAll('.bouton-css');
-
-
-// Fonction qui garde le bouton filtre selectionné//
 
 boutons.forEach((bouton) => {
     bouton.addEventListener('click', function() {
@@ -143,26 +140,56 @@ boutons.forEach((bouton) => {
       // Ajoute la classe "selected" au bouton cliqué
       this.classList.add('selected');
       // Stocke l'ID du bouton cliqué dans le stockage local
-      localStorage.setItem('boutonSelectionne', this.id);
+      sessionStorage.setItem('boutonSelectionne', this.id);
     });
   });
   
-  // Vérifie si un bouton a été sélectionné précédemment
-  const boutonSelectionne = localStorage.getItem('boutonSelectionne');
-  if (boutonSelectionne) {
-    // Ajoute la classe "selected" au bouton correspondant
-    const bouton = document.getElementById(boutonSelectionne);
-    bouton.classList.add('selected');
-  }
+// Vérifie si un bouton a été sélectionné précédemment
+const boutonSelectionne = sessionStorage.getItem('boutonSelectionne');
+if (boutonSelectionne) {
+// Ajoute la classe "selected" au bouton correspondant
+const bouton = document.getElementById(boutonSelectionne);
+bouton.classList.add('selected');
+}
 
-  window.onbeforeunload = function(){
-    localStorage.removeItem('boutonSelectionne');
-  }
-
-  
+window.onbeforeunload = function(){
+sessionStorage.removeItem('boutonSelectionne');
+}
 
 
-    
+//PARTIE LOGIN//
+
+const loginStatus = document.querySelector("#login")
+const logoutStatus = document.querySelector("#logout")
+const adminStatus = document.querySelector("#admin-logged",)
+const figureModify = document.querySelector("#figure-modify")
+const portfolioModify = document.querySelector("#portfolio-l-modify")
+
+console.log(sessionStorage.getItem("isConnected"));
+
+if (JSON.parse(sessionStorage.getItem("isConnected"))) {
+    loginStatus.style.display = 'none'
+    logoutStatus.style.display = 'block'
+    adminStatus.style.display = 'flex'
+    figureModify.style.display = 'flex'
+    portfolioModify.style.display = 'flex'
+      
+} else {
+    loginStatus.style.display = 'block'
+    logoutStatus.style.display = 'none'
+    adminStatus.style.display = 'none'
+    figureModify.style.display = 'none'
+    portfolioModify.style.display = 'none'
+}
+
+logoutStatus.addEventListener("click", (event) => {
+    event.preventDefault();
+    sessionStorage.removeItem("Token");
+    // Réinitialiser l'état de connexion de l'utilisateur
+    sessionStorage.removeItem("isConnected");
+    console.log(sessionStorage.getItem("isConnected")); 
+    window.location.replace("index.html");
+});
 
 
 
