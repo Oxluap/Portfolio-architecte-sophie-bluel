@@ -2,6 +2,7 @@
 
 const imagesContainer = document.querySelector('.gallery')
 
+
 const reponse = fetch('http://localhost:5678/api/works')
     .then((reponse) => reponse.json())
     .then((data) => {
@@ -19,6 +20,7 @@ const reponse = fetch('http://localhost:5678/api/works')
             figure.appendChild(figureImage)
             figure.appendChild(figureCaption)    
         });
+        console.log(data)
     });
     
 //Filtres//
@@ -133,24 +135,13 @@ const boutons = document.querySelectorAll('.bouton-css');
 
 boutons.forEach((bouton) => {
     bouton.addEventListener('click', function() {
-      // Supprime la classe "selected" de tous les boutons
       boutons.forEach((bouton) => {
         bouton.classList.remove('selected');
       });
-      // Ajoute la classe "selected" au bouton cliqué
       this.classList.add('selected');
-      // Stocke l'ID du bouton cliqué dans le stockage local
       sessionStorage.setItem('boutonSelectionne', this.id);
     });
   });
-  
-// Vérifie si un bouton a été sélectionné précédemment
-const boutonSelectionne = sessionStorage.getItem('boutonSelectionne');
-if (boutonSelectionne) {
-// Ajoute la classe "selected" au bouton correspondant
-const bouton = document.getElementById(boutonSelectionne);
-bouton.classList.add('selected');
-}
 
 window.onbeforeunload = function(){
 sessionStorage.removeItem('boutonSelectionne');
@@ -182,14 +173,15 @@ if (JSON.parse(sessionStorage.getItem("isConnected"))) {
     portfolioModify.style.display = 'none'
 }
 
+// Réinitialise l'état de connexion de l'utilisateur
 logoutStatus.addEventListener("click", (event) => {
     event.preventDefault();
     sessionStorage.removeItem("Token");
-    // Réinitialiser l'état de connexion de l'utilisateur
     sessionStorage.removeItem("isConnected");
     console.log(sessionStorage.getItem("isConnected")); 
     window.location.replace("index.html");
 });
 
-
+const verifierToken = sessionStorage.getItem("Token");
+console.log(verifierToken);
 
