@@ -390,7 +390,7 @@ body{
 	max-width: 650px;
 	text-align: center;
 	position: relative;
-	height: 660px;
+	max-height: 660px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;

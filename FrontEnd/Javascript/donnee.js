@@ -15,12 +15,12 @@ const reponse = fetch('http://localhost:5678/api/works')
             figureImage.alt = work.title
             figureCaption.innerHTML = work.title
             figure.className = work.category.name
-
+            figure.setAttribute('data-id', work.id);
+            
             imagesContainer.appendChild(figure)
             figure.appendChild(figureImage)
             figure.appendChild(figureCaption)    
         });
-        console.log(data)
     });
     
 //Filtres//
