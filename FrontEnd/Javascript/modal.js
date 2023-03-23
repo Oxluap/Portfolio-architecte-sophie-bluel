@@ -2,6 +2,7 @@
 
 const modal = document.querySelector('#modal');
 const modalContent = document.querySelector('#modal-content');
+const modalPhoto = document.querySelector('#modal-photo');
 const modalClose = document.querySelector('#modal-close');
 
 function showModal() {
@@ -15,6 +16,9 @@ function hideModal() {
 modalContent.addEventListener('click', function(e) {
   e.stopPropagation();
 });
+modalPhoto.addEventListener('click', function(e) {
+  e.stopPropagation();
+});
 
 modalClose.addEventListener('click', hideModal);
 
@@ -23,7 +27,26 @@ modal.addEventListener('click', hideModal);
 modalContent.addEventListener('click', function(e) {
   e.stopPropagation();
 });
-modalClose.addEventListener('click', hideModal);
+
+//Afficher la modal photo//
+
+const newPhotoBtn = document.querySelector('#new-photo');
+const returnBtn = document.querySelector('#modal-return');
+const modalPhotoClose = document.querySelector("#modal-photo-close");
+
+
+newPhotoBtn.addEventListener('click', function() {
+  modalContent.style.display = 'none';
+  modalPhoto.style.display = 'block';
+});
+
+returnBtn.addEventListener('click', function(){
+  modalContent.style.display = 'flex';
+  modalPhoto.style.display = 'none';
+})
+
+modalPhotoClose.addEventListener('click', hideModal);
+
 
 
 //ajout des travaux dans la modal
@@ -66,8 +89,7 @@ const reponses = fetch('http://localhost:5678/api/works')
 
 function deleteWorkById(workId) {
   const token = sessionStorage.getItem("Token");
-  const confirmation = confirm("Êtes-vous sûr de vouloir supprimer cet élément ?");
-
+  const confirmation = confirm("Êtes-vous sûr de vouloir supprimer ce travail ?");
   if (confirmation) {
     fetch(`http://localhost:5678/api/works/${workId}`, {
       method: 'DELETE',
@@ -94,7 +116,55 @@ function deleteWorkById(workId) {
 
 //supprimer toute la gallerie
 
+function deleteGallery() {
+  const token = sessionStorage.getItem("Token");
+  const galleryWorks = document.querySelectorAll('.gallery-modal figure, .gallery figure');
+  galleryWorks.forEach((galleryWork) => {
+    const workId = galleryWork.getAttribute('data-id');
+    fetch(`http://localhost:5678/api/works/${workId}`, {
+      method: 'DELETE',
+      headers: {
+        "Accept" : 'application/json',
+        "Authorization" : `Bearer ${token}`
+      }
+    });
+    galleryWork.remove();
+  });
+}
 
+document.getElementById("delete-gallery").addEventListener("click", function() {
+  const confirmation = confirm("Êtes-vous sûr de vouloir supprimer la galerie ?");
+  if (confirmation) {
+    deleteGallery();
+  }
+});
 
+//ajout d'un nouveau travail//
 
+const form = document.querySelector('form');
+form.addEventListener('submit', addNewWork);
 
+function addNewWork(event) {
+  event.preventDefault(); 
+
+  const token = sessionStorage.getItem("Token");
+
+  const title = document.getElementById("modal-photo-title").value;
+  const category = document.getElementById("modal-photo-category").value;
+  const image = document.getElementById("image").files[0];
+
+  const formData = new FormData();
+  formData.append("title", title);
+  formData.append("category", category);
+  formData.append("image", image);
+
+  fetch("http://localhost:5678/api/works", {
+    method: "POST",
+    body: formData,
+    headers: {
+      "Accept" : 'application/json', 
+      "Authorization" : `Bearer ${token}`
+    }
+  })
+  window.location.replace("index.html");
+}

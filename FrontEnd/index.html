@@ -60,6 +60,32 @@
 		  <button type="button" id="new-photo">Ajouter une photo</button>
 		  <button type="button" id="delete-gallery">Supprimer la gallery</button>
 		</div>
+		<div id="modal-photo" style="display : none;">
+			<h2>Ajout photo</h2>
+			<form enctype="multipart/form-data" method="POST">
+				<div id="form-photo-div">
+					<i class="fa-regular fa-image" style="color: #c5c6c9;"></i>
+				    <label for="image" id="label-image">+ Ajouter une photo</label>
+				    <input type="file" name="image" id="image" style="display: none;">
+					<p>jpg,png : 4mo max</p>
+			    </div>
+				<div class="modal-photo-input">
+				    <label for="title">Titre</label>
+				    <input type="text" name="title" id="modal-photo-title">
+			    </div>
+				<div class="modal-photo-input" id="barre-grise">
+				    <label for="category">Catégorie</label>
+				    <select name="category" id="modal-photo-category">
+						<option value="1">Objets</option>
+						<option value="2">Appartements</option>
+						<option value="3">Hotels & restaurants</option>
+					</select>
+			    </div>
+				<input type="submit" value="Valider" id="modal-valider">
+			</form>
+			<button id="modal-photo-close"><i class="fa-solid fa-xmark"></i></button>
+			<button id="modal-return"><i class="fa-solid fa-arrow-left"></i></button>
+		</div>
 	  </section>
 
 	<section id="portfolio">
