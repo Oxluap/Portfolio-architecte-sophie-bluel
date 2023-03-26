@@ -28,7 +28,7 @@ modalContent.addEventListener('click', function(e) {
   e.stopPropagation();
 });
 
-//Display the modal//
+//Add photo button//
 
 const newPhotoBtn = document.querySelector('#new-photo');
 const returnBtn = document.querySelector('#modal-return');
