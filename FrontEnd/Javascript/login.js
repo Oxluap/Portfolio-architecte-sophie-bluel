@@ -1,10 +1,10 @@
+//LOGIN ADMINISTRATOR//
+
 const element = {
     password: document.querySelector("#password"),
     email: document.querySelector("#email"),
     submit: document.querySelector("#submitUserInfo"),
 };
-
-verifierConnexion = sessionStorage.getItem('isConnected')
 
 
 let boutonLogin = element.submit.addEventListener("click", (a) => {
@@ -23,29 +23,17 @@ let boutonLogin = element.submit.addEventListener("click", (a) => {
         })
         .then((response) => response.json())
         .then((data) => {
-            console.log(data); // Ajouter cette ligne
             sessionStorage.setItem("Token", data.token);
-            console.log(sessionStorage.getItem("Token")); // Ajouter cette ligne
 
             if (data.message || data.error) {
-                alert("Identifiant ou mot de passe incorrect");
+                alert("Erreur dans l\'identifiant ou le mot de passe");
             } else {
                 sessionStorage.setItem("isConnected", JSON.stringify(true));
-                console.log(sessionStorage.getItem("isConnected")); // Ajouter cette ligne
-                //remplace bien la valeur pa true sur mozilla et chrome
-
-                if (sessionStorage.getItem("isConnected")) {
-                    window.location.replace("index.html");
-                }
+                window.location.replace("index.html");
             }
         })
 });
-const verifierToken = sessionStorage.getItem("Token");
-console.log(verifierToken);
 
-if (verifierToken) {
-    console.log("Token is ok");
-};
 
 
 

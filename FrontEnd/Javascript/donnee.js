@@ -1,4 +1,4 @@
-// Récupération des projets de l'architecte//
+//RETRIEVAL OF THE ARCHITECT'S PROJECTS//
 
 const imagesContainer = document.querySelector('.gallery')
 
@@ -14,122 +14,90 @@ const reponse = fetch('http://localhost:5678/api/works')
             figureImage.src = work.imageUrl
             figureImage.alt = work.title
             figureCaption.innerHTML = work.title
-            figure.className = work.category.name
             figure.setAttribute('data-id', work.id);
+            figure.setAttribute('category-id', work.categoryId)
             
             imagesContainer.appendChild(figure)
             figure.appendChild(figureImage)
             figure.appendChild(figureCaption)    
         });
+        
     });
     
-//Filtres//
-//Filtre Objets//
+//FILTERS//
+
+//Filter Objects//
         
 function filtreObjet(){
-    //afficher les Objets//
-    var elementObjets = document.querySelectorAll('.Objets');
-
-    for (var i = 0; i < elementObjets.length; i++){
-        elementObjets[i].style.display = 'block';
-    }
-
-    //cacher les autres travaux//
-    var elementsAppartements = document.querySelectorAll(".Appartements");
-    var elementsHotelRestaurants = document.querySelectorAll("[class*=Hotels][class*=restaurants]");
-
-    for (var i = 0; i < elementsAppartements.length; i++){
-        elementsAppartements[i].style.display = 'none';
-    }
-
-    for (var j = 0; j < elementsHotelRestaurants.length; j++){
-        elementsHotelRestaurants[j].style.display = 'none';
-    }
+    //Display Objects//
+    const elements = document.querySelectorAll('div.gallery figure');
+    elements.forEach((element) => {
+      const categoryId = element.getAttribute('category-id');
+      if (categoryId === '1') {
+        element.style.display = 'block';
+      } else {
+        element.style.display = 'none';
+      }
+    });
 }
 var bouton = document.getElementById('btnObjet');
 bouton.addEventListener('click',filtreObjet);
               
        
-//Filtre Hotel & resutaurants//
+//Filter Hotel & restaurants//
         
 function filtreHotelsRestaurants(){
-    //afficher les Hotels & restaurants//
-    var elementsHotelRestaurants = document.querySelectorAll("[class*=Hotels][class*=restaurants]");
-
-    for (var i = 0; i < elementsHotelRestaurants.length; i++){
-        elementsHotelRestaurants[i].style.display = 'block';
-    }
-
-    //cacher  les autrex travaux//
-    var elementsAppartements = document.querySelectorAll('.Appartements');
-    var elementsObjets = document.querySelectorAll('.Objets');
-
-    for (var i = 0; i < elementsAppartements.length; i++){
-        elementsAppartements[i].style.display = 'none';
-    }
-
-    for (var j = 0; j < elementsObjets.length; j++){
-        elementsObjets[j].style.display = 'none';
-    }
+    //Display Hotels & restaurants//
+    const elements = document.querySelectorAll('div.gallery figure');
+    elements.forEach((element) => {
+      const categoryId = element.getAttribute('category-id');
+      if (categoryId === '3') {
+        element.style.display = 'block';
+      } else {
+        element.style.display = 'none';
+      }
+    });
 }
 
 var bouton = document.getElementById('btnHotelRestaurant');
 bouton.addEventListener('click',filtreHotelsRestaurants);
 
         
-//Filtre Appartements//
+//Filter Appartements//
 
 function filtreAppartements(){
             
-    //afficher les Appartements//
-    var elementsAppartements = document.querySelectorAll('.Appartements');
-
-    for(var i = 0; i < elementsAppartements.length; i++){
-        elementsAppartements[i].style.display = 'block';
-    }
-
-    //cacher le autrex travaux//
-    var elementsObjets = document.querySelectorAll('.Objets');
-    var elementsHotelRestaurants = document.querySelectorAll("[class*=Hotels][class*=restaurants]");
-
-    for (var j = 0; j < elementsObjets.length; j++){
-        elementsObjets[j].style.display = 'none';
-    }
-
-    for(var j= 0; j < elementsHotelRestaurants.length; j++){
-        elementsHotelRestaurants[j].style.display = 'none';
-    }
+    //Display Appartements//
+    const elements = document.querySelectorAll('div.gallery figure');
+    elements.forEach((element) => {
+        const categoryId = element.getAttribute('category-id');
+        if (categoryId === '2') {
+            element.style.display = 'block';
+        } else {
+            element.style.display = 'none';
+        }
+    });
 }
 
 var bouton = document.getElementById('btnAppartement');
 bouton.addEventListener('click',filtreAppartements);
 
-//Filtre Tous//
+//Filter all categories//
 
 function filtreTous(){
-    //Afficher tout les travaux//
-    var elementsObjets = document.querySelectorAll('.Objets');
-    var elementsAppartements = document.querySelectorAll('.Appartements');
-    var elementsHotelRestaurants = document.querySelectorAll("[class*=Hotels][class*=restaurants]");
 
-    for (var i = 0; i < elementsObjets.length; i++){
-        elementsObjets[i].style.display = 'block';
-    }
-
-    for(var i = 0; i < elementsAppartements.length; i++){
-        elementsAppartements[i].style.display = 'block';
-    }
-
-    for (var i = 0; i < elementsHotelRestaurants.length; i++){
-        elementsHotelRestaurants[i].style.display = 'block';
-    }
+    //Display all categories of works//
+    const elements = document.querySelectorAll('div.gallery figure');
+    elements.forEach((element) => {
+        element.style.display = 'block';
+    });   
 }
 
 var bouton = document.getElementById('btnTous');
 bouton.addEventListener('click',filtreTous);
 
 
-// Fonction qui garde le bouton filtre selectionné//
+//Function that keeps the filter button selected//
 
 const boutons = document.querySelectorAll('.bouton-css');
 
@@ -142,13 +110,13 @@ boutons.forEach((bouton) => {
       sessionStorage.setItem('boutonSelectionne', this.id);
     });
   });
-
+//allows to return to the "all filter" when reloading the page
 window.onbeforeunload = function(){
 sessionStorage.removeItem('boutonSelectionne');
 }
 
 
-//PARTIE LOGIN//
+//LOGIN ADMINISTRATOR//
 
 const loginStatus = document.querySelector("#login")
 const logoutStatus = document.querySelector("#logout")
@@ -156,7 +124,7 @@ const adminStatus = document.querySelector("#admin-logged",)
 const figureModify = document.querySelector("#figure-modify")
 const portfolioModify = document.querySelector("#portfolio-l-modify")
 
-console.log(sessionStorage.getItem("isConnected"));
+//displays the administrator elements//
 
 if (JSON.parse(sessionStorage.getItem("isConnected"))) {
     loginStatus.style.display = 'none'
@@ -173,15 +141,12 @@ if (JSON.parse(sessionStorage.getItem("isConnected"))) {
     portfolioModify.style.display = 'none'
 }
 
-// Réinitialise l'état de connexion de l'utilisateur
+//Reset user's connexion state//
 logoutStatus.addEventListener("click", (event) => {
     event.preventDefault();
     sessionStorage.removeItem("Token");
     sessionStorage.removeItem("isConnected");
-    console.log(sessionStorage.getItem("isConnected")); 
     window.location.replace("index.html");
 });
 
-const verifierToken = sessionStorage.getItem("Token");
-console.log(verifierToken);
 
