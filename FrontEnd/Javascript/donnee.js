@@ -120,9 +120,11 @@ sessionStorage.removeItem('boutonSelectionne');
 
 const loginStatus = document.querySelector("#login")
 const logoutStatus = document.querySelector("#logout")
-const adminStatus = document.querySelector("#admin-logged",)
+const adminStatus = document.querySelector("#admin-logged")
 const figureModify = document.querySelector("#figure-modify")
 const portfolioModify = document.querySelector("#portfolio-l-modify")
+const filtreModify = document.querySelector('.filtre')
+
 
 //displays the administrator elements//
 
@@ -132,6 +134,7 @@ if (JSON.parse(sessionStorage.getItem("isConnected"))) {
     adminStatus.style.display = 'flex'
     figureModify.style.display = 'flex'
     portfolioModify.style.display = 'flex'
+    filtreModify.style.display = 'none'
       
 } else {
     loginStatus.style.display = 'block'
@@ -139,6 +142,7 @@ if (JSON.parse(sessionStorage.getItem("isConnected"))) {
     adminStatus.style.display = 'none'
     figureModify.style.display = 'none'
     portfolioModify.style.display = 'none'
+    filtreModify.style.display = 'flex'
 }
 
 //Reset user's connexion state//
