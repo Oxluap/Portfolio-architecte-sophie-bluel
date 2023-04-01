@@ -355,6 +355,12 @@ body{
 	margin-top: 15px;
 }
 
+#figure-modify-a{
+	display: flex;
+	width: 80%;
+	margin-bottom: 10px;
+}
+
 #figure-modify i{
 	font-size: 1.2em;
 }

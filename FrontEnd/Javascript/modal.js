@@ -24,9 +24,7 @@ modalClose.addEventListener('click', hideModal);
 
 
 modal.addEventListener('click', hideModal);
-modalContent.addEventListener('click', function(e) {
-  e.stopPropagation();
-});
+
 
 //Add photo button//
 
@@ -53,33 +51,39 @@ modalPhotoClose.addEventListener('click', hideModal);
 
 const imagesModalContainer = document.querySelector('.gallery-modal')
 
-const reponses = fetch('http://localhost:5678/api/works')
-    .then((reponse) => reponse.json())
-    .then((datas) => {
-      datas.forEach((works) => {
-        const figure = document.createElement('figure')
-        const figureCaption = document.createElement('figcaption')
-        const figureImage = document.createElement('img')
-        const deleteIcon = document.createElement('i') 
+function createModalWorkFigure(work) {
+  const figure = document.createElement('figure')
+  const figureCaption = document.createElement('figcaption')
+  const figureImage = document.createElement('img')
+  const deleteIcon = document.createElement('i') 
         
-        figureImage.src = works.imageUrl
-        figureImage.alt = works.title
-        figureCaption.innerHTML = "éditer"
-        figure.setAttribute('data-id', works.id); // Add a data-id attribute to store the work ID
-        deleteIcon.className = "fa-regular fa-trash-can" 
-      
-        imagesModalContainer.appendChild(figure)
-        figure.appendChild(figureImage)
-        figure.appendChild(figureCaption)
-        figure.appendChild(deleteIcon)
-      
-        // Add a delete event when clicking on the "delete" icon
-        deleteIcon.addEventListener('click', (event) => {
-          event.preventDefault();
-          deleteWorkById(works.id);
-        });
-      });
+  figureImage.src = work.imageUrl
+  figureImage.alt = work.title
+  figureCaption.innerHTML = "éditer"
+  figure.setAttribute('data-id', work.id); // Add a data-id attribute to store the work ID
+  deleteIcon.className = "fa-regular fa-trash-can" 
+
+  figure.appendChild(figureImage)
+  figure.appendChild(figureCaption)
+  figure.appendChild(deleteIcon)
+
+  // Add a delete event when clicking on the "delete" icon
+  deleteIcon.addEventListener('click', (event) => {
+    event.preventDefault();
+    deleteWorkById(work.id);
+  });
+
+  return figure;
+}
+
+fetch('http://localhost:5678/api/works')
+  .then((response) => response.json())
+  .then((data) => {
+    data.forEach((work) => {
+      const figure = createModalWorkFigure(work);
+      imagesModalContainer.appendChild(figure);
     });
+  });
 
 
 //DELETE WORK//
@@ -95,6 +99,10 @@ function deleteWorkById(workId) {
         "Authorization" : `Bearer ${token}`
       }
     })
+    .then(response => {
+      if (!response.ok){
+      throw new error ('La supression du travai à echoué.');
+    }
     const modalWorkToRemove = document.querySelector(`figure[data-id="${workId}"]`);
     if (modalWorkToRemove) {
       modalWorkToRemove.remove();
@@ -106,8 +114,10 @@ function deleteWorkById(workId) {
         console.error('Élément à supprimer non trouvé dans la galerie principale');
       }
     } else {
-  console.error('Élément à supprimer non trouvé dans la modale');
+        console.error('Élément à supprimer non trouvé dans la modale');
     }
+  })
+  .catch(error => console.error(error));
   }    
 }  
 
@@ -188,57 +198,28 @@ function addNewWork(event) {
   formData.append("image", image);
 
   fetch("http://localhost:5678/api/works", {
-  method: "POST",
-  body: formData,
-  headers: {
-    "Accept" : 'application/json', 
-    "Authorization" : `Bearer ${token}`
-  }
-})
-.then(response => response.json()) 
-.then(work => {
-  //create and add the new element to the gallery//
-  const figure = document.createElement('figure')
-  const figureCaption = document.createElement('figcaption')
-  const figureImage = document.createElement('img')
-
-  figureImage.src = work.imageUrl
-  figureImage.alt = work.title
-  figureCaption.innerHTML = work.title
-  figure.setAttribute('data-id', work.id);
-  figure.setAttribute('category-id', work.categoryId)
-
-  const gallery = document.querySelector('.gallery');
-  gallery.appendChild(figure);
-  figure.appendChild(figureImage);
-  figure.appendChild(figureCaption);
-
-  //create and add the new element to the modal gallery//
-  const figureModal = document.createElement('figure')
-  const figureCaptionModal = document.createElement('figcaption')
-  const figureImageModal = document.createElement('img')
-  const deleteIcon = document.createElement('i')
-
-  figureImageModal.src = work.imageUrl
-  figureImageModal.alt = work.title
-  figureCaptionModal.innerHTML = "éditer"
-  figureModal.setAttribute('data-id', work.id);
-  deleteIcon.className = "fa-regular fa-trash-can" 
-
-  const galleryModal = document.querySelector('.gallery-modal');
-  galleryModal.appendChild(figureModal);
-  figureModal.appendChild(figureImageModal);
-  figureModal.appendChild(figureCaptionModal);
-  figureModal.appendChild(deleteIcon);
-
-  //Add a delete event when clicking on the "delete" icon//
-  deleteIcon.addEventListener('click', (event) => {
-    event.preventDefault();
-    deleteWorkById(work.id);
-  });
-  alert('Le nouvel élément a été ajouté avec succès.');
-})
-.catch(error => console.error(error));
+    method: "POST",
+    body: formData,
+    headers: {
+      "Accept" : 'application/json', 
+      "Authorization" : `Bearer ${token}`
+    }
+  })
+  .then(response => response.json()) 
+  .then(work => {
+    //create and add the new work to the gallery//
+    const figure = createWorkFigure(work);
+    const gallery = document.querySelector('.gallery');
+    gallery.appendChild(figure);
+  
+    //create and add the new work to the modal gallery//
+    const figureModal = createModalWorkFigure(work);
+    const galleryModal = document.querySelector('.gallery-modal');
+    galleryModal.appendChild(figureModal);
+  
+    alert('Le nouvel travail a été ajouté avec succès.');
+  })
+  .catch(error => console.error(error));
 }
 
 //PREVIEW IMG//

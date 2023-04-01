@@ -11,15 +11,15 @@ let boutonLogin = element.submit.addEventListener("click", (a) => {
     a.preventDefault();
 
     fetch("http://localhost:5678/api/users/login", {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                email: element.email.value,
-                password: element.password.value,
-            }),
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+        email: element.email.value,
+        password: element.password.value,
+        }),
         })
         .then((response) => response.json())
         .then((data) => {

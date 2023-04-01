@@ -2,9 +2,7 @@
 <html lang="fr">
 <head>
 	<meta charset="UTF-8">
-	<title>Sophie Bluel - Architecte d'intérieur</title>
-	<script src="Javascript/donnee.js" defer></script>
-	<script src="Javascript/modal.js" defer></script>
+	<title>Sophie Bluel - Architecte d'intérieur</title> 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,6 +43,10 @@
 		    </div>
 		</figure>
 		<article>
+			<div id="figure-modify-a">
+			    <i class="fa-regular fa-pen-to-square"></i>
+			    <a href="#" class="modify-a">modifier</a>
+		    </div>
 			<h2>Designer d'espace</h2>
 			<p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison finale du chantier.</p>
 			<p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
@@ -77,9 +79,6 @@
 				    <label for="category">Catégorie</label>
 				    <select name="category" id="modal-photo-category">
 						<option value="" selected></option>
-						<option value="1">Objets</option>
-						<option value="2">Appartements</option>
-						<option value="3">Hotels & restaurants</option>
 					</select>
 			    </div>
 				<input type="submit" value="Valider" id="modal-valider">
@@ -129,5 +128,7 @@
 	</nav>
 </footer>
 </body>
+<script src="Javascript/donnee.js"></script>
+<script src="Javascript/modal.js"></script>
 </html>
 

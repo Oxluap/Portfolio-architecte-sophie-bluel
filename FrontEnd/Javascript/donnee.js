@@ -2,27 +2,31 @@
 
 const imagesContainer = document.querySelector('.gallery')
 
+function createWorkFigure(work) {
+  const figure = document.createElement('figure')
+  const figureCaption = document.createElement('figcaption')
+  const figureImage = document.createElement('img')
 
-const reponse = fetch('http://localhost:5678/api/works')
-    .then((reponse) => reponse.json())
-    .then((data) => {
-        data.forEach((work) => {
-            const figure = document.createElement('figure')
-            const figureCaption = document.createElement('figcaption')
-            const figureImage = document.createElement('img')
+  figureImage.src = work.imageUrl
+  figureImage.alt = work.title
+  figureCaption.innerHTML = work.title
+  figure.setAttribute('data-id', work.id);
+  figure.setAttribute('category-id', work.categoryId)
+  
+  figure.appendChild(figureImage)
+  figure.appendChild(figureCaption)    
 
-            figureImage.src = work.imageUrl
-            figureImage.alt = work.title
-            figureCaption.innerHTML = work.title
-            figure.setAttribute('data-id', work.id);
-            figure.setAttribute('category-id', work.categoryId)
-            
-            imagesContainer.appendChild(figure)
-            figure.appendChild(figureImage)
-            figure.appendChild(figureCaption)    
-        });
-        
+  return figure;
+}
+
+fetch('http://localhost:5678/api/works')
+  .then((response) => response.json())
+  .then((data) => {
+    data.forEach((work) => {
+      const figure = createWorkFigure(work);
+      imagesContainer.appendChild(figure);
     });
+  });
     
 //FILTERS//
 
@@ -118,11 +122,12 @@ sessionStorage.removeItem('boutonSelectionne');
 
 //LOGIN ADMINISTRATOR//
 
-const loginStatus = document.querySelector("#login")
-const logoutStatus = document.querySelector("#logout")
-const adminStatus = document.querySelector("#admin-logged")
-const figureModify = document.querySelector("#figure-modify")
-const portfolioModify = document.querySelector("#portfolio-l-modify")
+const loginStatus = document.getElementById("login")
+const logoutStatus = document.getElementById("logout")
+const adminStatus = document.getElementById("admin-logged")
+const figureModify = document.getElementById("figure-modify")
+const description = document.getElementById("figure-modify-a")
+const portfolioModify = document.getElementById("portfolio-l-modify")
 const filtreModify = document.querySelector('.filtre')
 
 
@@ -135,6 +140,7 @@ if (JSON.parse(sessionStorage.getItem("isConnected"))) {
     figureModify.style.display = 'flex'
     portfolioModify.style.display = 'flex'
     filtreModify.style.display = 'none'
+    description.style.display = 'flex'
       
 } else {
     loginStatus.style.display = 'block'
@@ -143,6 +149,7 @@ if (JSON.parse(sessionStorage.getItem("isConnected"))) {
     figureModify.style.display = 'none'
     portfolioModify.style.display = 'none'
     filtreModify.style.display = 'flex'
+    description.style.display = 'none'
 }
 
 //Reset user's connexion state//
@@ -153,4 +160,23 @@ logoutStatus.addEventListener("click", (event) => {
     window.location.replace("index.html");
 });
 
+
+//Categories//
+
+const selectCategory = document.getElementById('modal-photo-category');
+
+const reponseCategory = fetch('http://localhost:5678/api/categories')
+.then((response) => response.json())
+.then((data) => {
+  data.forEach((category) => {
+    const categoryOption = document.createElement('option')
+    const categoryLabel = document.createElement('label')
+
+    categoryOption.setAttribute('value', category.id)
+    categoryLabel.innerHTML = category.name
+
+    selectCategory.appendChild(categoryOption)
+    categoryOption.appendChild(categoryLabel)
+  });
+});
 
